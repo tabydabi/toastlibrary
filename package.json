@@ -1,38 +1,42 @@
 {
-  "name": "toast",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^12.1.10",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-scripts": "4.0.3",
-    "web-vitals": "^1.0.1"
-  },
+  "name": "toast-lib",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook",
+    "build-lib": "rollup -c"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.11.6",
+    "@babel/preset-env": "^7.11.5",
+    "@babel/preset-react": "^7.10.4",
+    "@storybook/addon-actions": "^6.0.22",
+    "@storybook/addon-controls": "^6.0.22",
+    "@storybook/addon-essentials": "^6.0.22",
+    "@storybook/addon-links": "^6.0.22",
+    "@storybook/react": "^6.0.22",
+    "@svgr/rollup": "^5.4.0",
+    "babel-loader": "^8.1.0",
+    "babel-plugin-react-require": "^3.1.3",
+    "babel-plugin-syntax-dynamic-import": "^6.18.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-is": "^16.13.1",
+    "rollup": "^2.26.11",
+    "rollup-plugin-babel": "^4.4.0",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-generate-package-json": "^3.2.0",
+    "rollup-plugin-image": "^1.0.2",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-postcss": "^3.1.8",
+    "rollup-plugin-svg": "^2.0.0",
+    "rollup-plugin-url": "^3.0.1",
+    "styled-components": "^5.2.0"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  }
+  "dependencies": {}
 }
