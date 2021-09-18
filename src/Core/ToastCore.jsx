@@ -1,6 +1,6 @@
 import React from "react";
 import { Toast } from "../Toast/Toast";
-import { ToastContainer } from "../Toast/TastContainer";
+import { ToastContainer } from "../container/TastContainer";
 import errorIcon from "../assets/error.svg";
 import infoIcon from "../assets/info.svg";
 import warningIcon from "../assets/warning.svg";
@@ -82,18 +82,17 @@ class _Toast {
           toastPadding: padding,
         };
         break;
-
-      default:
-        toastProperties = {
-          ...toastProperties,
-          id: toastId ? toastId : id,
-          title: title ? title : "Custom",
-          titleColor: titleColor ? titleColor : "#000000",
-          description: description ? description : "description text message",
-          backgroundColor: backgroundColor ? backgroundColor : "#f2f2f2",
-          icon: icon ? icon : succsessIcon,
-          toastPadding: padding,
-        };
+        default:
+          toastProperties = {
+            ...toastProperties,
+            id: toastId ? toastId : id,
+            title: title ? title : "Custom",
+            titleColor: titleColor ? titleColor : "#000000",
+            description: description ? description : "description text message",
+            backgroundColor: backgroundColor ? backgroundColor : "#f2f2f2",
+            icon: icon ? icon : succsessIcon,
+            toastPadding: padding,
+          };
     }
     if (toastList.length < 3) toastList = [...toastList, toastProperties];
 

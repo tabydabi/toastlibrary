@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { ToastWrapper } from "./components";
+import { ToastWrapper } from "./styles";
 
 export const Toast = (props) => {
   const { toastList, position, autoDelete, autoDeleteTime, animation } = props;
@@ -39,9 +39,7 @@ export const Toast = (props) => {
             className={`notification toast ${position}`}
             style={{
               backgroundColor: toast.backgroundColor,
-              padding: toast.toastPadding
-                ? toast.toastPadding
-                : "30px 20px 20px 25px",
+              padding: toast.toastPadding,
             }}
           >
             <button
@@ -53,7 +51,7 @@ export const Toast = (props) => {
               x
             </button>
             <div className="notification-image">
-              <img src={toast.icon} alt="" />
+              <img src={toast.icon}/>
             </div>
             <div>
               <p
@@ -75,13 +73,14 @@ export const Toast = (props) => {
 
 Toast.defaultProps = {
   position: "bottom-right",
-  autoDelete: false,
+  autoDelete: true,
+  autoDeleteTime: 3000,
 };
 
 Toast.propTypes = {
   toastList: PropTypes.array.isRequired,
   position: PropTypes.string,
-  autoDelete: PropTypes.bool,
+  autoDelete: PropTypes.string,
   autoDeleteTime: PropTypes.number,
   toastPadding: PropTypes.string,
   animation: PropTypes.string,
