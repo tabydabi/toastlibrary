@@ -47,7 +47,7 @@ export const Toast = (props) => {
               padding: toast.toastPadding,
             }}
           >
-            <button onClick = {()=>deleteToast(toast.id)}>X</button>
+            <button onClick = {() => deleteToast(toast.id)}>X</button>
             <div className="notification-image">
               <img src={toast.icon} />
             </div>
@@ -79,7 +79,7 @@ Toast.defaultProps = {
 Toast.propTypes = {
   toastList: PropTypes.array.isRequired,
   position: PropTypes.string,
-  autoDelete: PropTypes.string,
+  autoDelete: PropTypes.bool,
   autoDeleteTime: PropTypes.number,
   toastPadding: PropTypes.string,
   animation: PropTypes.string,

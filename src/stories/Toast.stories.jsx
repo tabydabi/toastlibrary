@@ -84,7 +84,7 @@ export const ToastExample = (args) =>
 ToastExample.args = {
   toastType: "error",
   toastPosition: "top-right",
-  toastIsAutoDelete: "true",
+  toastIsAutoDelete: true,
   toastAutoDeleteTime: 3000,
   animation: "",
   title: "",
