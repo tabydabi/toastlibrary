@@ -1,6 +1,6 @@
 import React from "react";
 import { Toast } from "../components/Toast/Toast";
-import { ToastContainer } from "../container/ToastContainer";
+import { ToastContainer } from "../components/Toast/ToastContainer";
 import errorIcon from "../assets/error.svg";
 import infoIcon from "../assets/info.svg";
 import warningIcon from "../assets/warning.svg";

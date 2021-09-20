@@ -29,7 +29,6 @@ export const Toast = (props) => {
     toastList.splice(toastListItem, 1);
     setList([...list]);
   };
-  
 
   return (
     <ToastWrapper animation={animation}>
@@ -43,16 +42,9 @@ export const Toast = (props) => {
               padding: toast.toastPadding,
             }}
           >
-            <button
-              onClick={() => deleteToast(toast.id)}
-              style={{
-                color: toast.titleColor,
-              }}
-            >
-              X
-            </button>
+            <button onClick={() => deleteToast(toast.id)}>X</button>
             <div className="notification-image">
-              <img src={toast.icon}/>
+              <img src={toast.icon} />
             </div>
             <div>
               <p
