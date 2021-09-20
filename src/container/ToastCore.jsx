@@ -39,7 +39,6 @@ class _Toast {
       icon,
       padding,
     } = toastProperties;
-    console.log(toastProperties);
 
     const id = Math.floor(Math.random() * 101 + 1);
 

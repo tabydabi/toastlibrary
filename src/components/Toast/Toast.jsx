@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { ToastWrapper } from "./styles";
+import { ErrorBoundary } from "../ErrorBoundary/ErrorBoundary";
+
 
 export const Toast = (props) => {
   const { toastList, position, autoDelete, autoDeleteTime, animation } = props;
   const [list, setList] = useState([toastList]);
-  console.log(toastList);
 
   useEffect(() => {
     setList([...toastList]);
@@ -31,19 +32,22 @@ export const Toast = (props) => {
     setList([...list]);
   };
 
+  
+
   return (
+    <ErrorBoundary>
     <ToastWrapper animation={animation}>
       <div className={`notification-container ${position}`}>
         {list.map((toast, i) => (
           <div
-            key={i}
+            key={toast.id}
             className={`notification toast ${position}`}
             style={{
               backgroundColor: toast.backgroundColor,
               padding: toast.toastPadding,
             }}
           >
-            <button onClick={() => deleteToast(toast.id)}>X</button>
+            <button onClick = {()=>deleteToast(toast.id)}>X</button>
             <div className="notification-image">
               <img src={toast.icon} />
             </div>
@@ -62,6 +66,7 @@ export const Toast = (props) => {
         ))}
       </div>
     </ToastWrapper>
+    </ErrorBoundary>
   );
 };
 
