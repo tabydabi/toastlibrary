@@ -5,6 +5,7 @@ import { ToastWrapper } from "./styles";
 export const Toast = (props) => {
   const { toastList, position, autoDelete, autoDeleteTime, animation } = props;
   const [list, setList] = useState([toastList]);
+  console.log(toastList);
 
   useEffect(() => {
     setList([...toastList]);
