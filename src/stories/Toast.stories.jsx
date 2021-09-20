@@ -1,4 +1,4 @@
-import { toast } from "../Core/ToastCore";
+import { toast } from "../container/ToastCore";
 
 export default {
   title: "Toast",
