@@ -1,10 +1,19 @@
 import React from "react";
-import { Toast } from "../Toast/Toast";
-import { ToastContainer } from "../container/TastContainer";
+import { Toast } from "../components/Toast/Toast";
+import { ToastContainer } from "../container/ToastContainer";
 import errorIcon from "../assets/error.svg";
 import infoIcon from "../assets/info.svg";
 import warningIcon from "../assets/warning.svg";
 import succsessIcon from "../assets/success.svg";
+import {
+  WHITE,
+  GREEN,
+  RED,
+  PURPLE,
+  BLACK,
+  YELOW,
+  GREY,
+} from "../constants/colors";
 
 let toastList = [];
 
@@ -30,6 +39,7 @@ class _Toast {
       icon,
       padding,
     } = toastProperties;
+    console.log(toastProperties);
 
     const id = Math.floor(Math.random() * 101 + 1);
 
@@ -39,9 +49,9 @@ class _Toast {
           ...toastProperties,
           id: toastId ? toastId : id,
           title: title ? title : "Success",
-          titleColor: titleColor ? titleColor : "#FFFFFF",
+          titleColor: titleColor ? titleColor : WHITE,
           description: description ? description : "",
-          backgroundColor: backgroundColor ? backgroundColor : "#5cb85c",
+          backgroundColor: backgroundColor ? backgroundColor : GREEN,
           icon: icon ? icon : succsessIcon,
           toastPadding: padding,
         };
@@ -51,9 +61,9 @@ class _Toast {
           ...toastProperties,
           id: toastId ? toastId : id,
           title: title ? title : "Error",
-          titleColor: titleColor ? titleColor : "#FFFFFF",
+          titleColor: titleColor ? titleColor : WHITE,
           description: description ? description : "",
-          backgroundColor: backgroundColor ? backgroundColor : "#d9534f",
+          backgroundColor: backgroundColor ? backgroundColor : RED,
           icon: icon ? icon : errorIcon,
           toastPadding: padding,
         };
@@ -63,9 +73,9 @@ class _Toast {
           ...toastProperties,
           id: toastId ? toastId : id,
           title: title ? title : "Info",
-          titleColor: titleColor ? titleColor : "#FFFFFF",
+          titleColor: titleColor ? titleColor : WHITE,
           description: description ? description : "",
-          backgroundColor: backgroundColor ? backgroundColor : "#9A40D3",
+          backgroundColor: backgroundColor ? backgroundColor : PURPLE,
           icon: icon ? icon : infoIcon,
           toastPadding: padding,
         };
@@ -75,24 +85,24 @@ class _Toast {
           ...toastProperties,
           id: toastId ? toastId : id,
           title: title ? title : "Warning",
-          titleColor: titleColor ? titleColor : "#000000",
+          titleColor: titleColor ? titleColor : BLACK,
           description: description ? description : "",
-          backgroundColor: backgroundColor ? backgroundColor : "#F4E048",
+          backgroundColor: backgroundColor ? backgroundColor : YELOW,
           icon: icon ? icon : warningIcon,
           toastPadding: padding,
         };
         break;
-        default:
-          toastProperties = {
-            ...toastProperties,
-            id: toastId ? toastId : id,
-            title: title ? title : "Custom",
-            titleColor: titleColor ? titleColor : "#000000",
-            description: description ? description : "description text message",
-            backgroundColor: backgroundColor ? backgroundColor : "#f2f2f2",
-            icon: icon ? icon : succsessIcon,
-            toastPadding: padding,
-          };
+      default:
+        toastProperties = {
+          ...toastProperties,
+          id: toastId ? toastId : id,
+          title: title ? title : "Custom",
+          titleColor: titleColor ? titleColor : BLACK,
+          description: description ? description : "",
+          backgroundColor: backgroundColor ? backgroundColor : GREY,
+          icon: icon ? icon : succsessIcon,
+          toastPadding: padding,
+        };
     }
     if (toastList.length < 3) toastList = [...toastList, toastProperties];
 
@@ -110,6 +120,6 @@ class _Toast {
   }
 }
 
-const toast = new _Toast(toastList);
+export const toast = new _Toast(toastList);
 
-export { toast };
+

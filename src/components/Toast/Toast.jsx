@@ -29,6 +29,7 @@ export const Toast = (props) => {
     toastList.splice(toastListItem, 1);
     setList([...list]);
   };
+  
 
   return (
     <ToastWrapper animation={animation}>
@@ -48,7 +49,7 @@ export const Toast = (props) => {
                 color: toast.titleColor,
               }}
             >
-              x
+              X
             </button>
             <div className="notification-image">
               <img src={toast.icon}/>
