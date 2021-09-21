@@ -51,16 +51,8 @@ export default {
         type: "color",
       },
     },
-    icon: {
-      control: {
-        type: "text",
-      },
-    },
-    toastPadding: {
-      control: {
-        type: "text",
-      },
-    },
+
+
   },
 };
 
@@ -91,6 +83,4 @@ ToastExample.args = {
   titleColor: "",
   description: "toast description",
   backgroundColor: "",
-  icon: "",
-  toastPadding: "",
 };
