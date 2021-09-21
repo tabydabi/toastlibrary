@@ -38,7 +38,7 @@ export const Toast = (props) => {
     <ErrorBoundary>
     <ToastWrapper animation={animation}>
       <div className={`notification-container ${position}`}>
-        {list.map((toast, i) => (
+        {list.map((toast) => (
           <div
             key={toast.id}
             className={`notification toast ${position}`}
