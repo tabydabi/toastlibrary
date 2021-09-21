@@ -82,6 +82,85 @@ function _objectSpread2(target) {
   return target;
 }
 
+function _inherits(subClass, superClass) {
+  if (typeof superClass !== "function" && superClass !== null) {
+    throw new TypeError("Super expression must either be null or a function");
+  }
+
+  subClass.prototype = Object.create(superClass && superClass.prototype, {
+    constructor: {
+      value: subClass,
+      writable: true,
+      configurable: true
+    }
+  });
+  if (superClass) _setPrototypeOf(subClass, superClass);
+}
+
+function _getPrototypeOf(o) {
+  _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+    return o.__proto__ || Object.getPrototypeOf(o);
+  };
+  return _getPrototypeOf(o);
+}
+
+function _setPrototypeOf(o, p) {
+  _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+    o.__proto__ = p;
+    return o;
+  };
+
+  return _setPrototypeOf(o, p);
+}
+
+function _isNativeReflectConstruct() {
+  if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+  if (Reflect.construct.sham) return false;
+  if (typeof Proxy === "function") return true;
+
+  try {
+    Date.prototype.toString.call(Reflect.construct(Date, [], function () {}));
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+function _assertThisInitialized(self) {
+  if (self === void 0) {
+    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  }
+
+  return self;
+}
+
+function _possibleConstructorReturn(self, call) {
+  if (call && (typeof call === "object" || typeof call === "function")) {
+    return call;
+  }
+
+  return _assertThisInitialized(self);
+}
+
+function _createSuper(Derived) {
+  var hasNativeReflectConstruct = _isNativeReflectConstruct();
+
+  return function _createSuperInternal() {
+    var Super = _getPrototypeOf(Derived),
+        result;
+
+    if (hasNativeReflectConstruct) {
+      var NewTarget = _getPrototypeOf(this).constructor;
+
+      result = Reflect.construct(Super, arguments, NewTarget);
+    } else {
+      result = Super.apply(this, arguments);
+    }
+
+    return _possibleConstructorReturn(this, result);
+  };
+}
+
 function _taggedTemplateLiteral(strings, raw) {
   if (!raw) {
     raw = strings.slice(0);
@@ -1282,6 +1361,54 @@ var ToastWrapper = styled__default['default'].div(_templateObject || (_templateO
   return props.animation ? props.animation : "toast-in-left";
 });
 
+var ErrorBoundary = /*#__PURE__*/function (_React$Component) {
+  _inherits(ErrorBoundary, _React$Component);
+
+  var _super = _createSuper(ErrorBoundary);
+
+  function ErrorBoundary(props) {
+    var _this;
+
+    _classCallCheck(this, ErrorBoundary);
+
+    _this = _super.call(this, props);
+    _this.state = {
+      hasError: false,
+      error: '',
+      errorInfo: ''
+    };
+    return _this;
+  }
+
+  _createClass(ErrorBoundary, [{
+    key: "componentDidCatch",
+    value: function componentDidCatch(error, errorInfo) {
+      this.setState({
+        error: error,
+        errorInfo: errorInfo
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      if (this.state.hasError) {
+        return /*#__PURE__*/React__default['default'].createElement("h1", null, "You have some problems: ", this.state.error, ", more info: ", this.state.errorInfo);
+      }
+
+      return this.props.children;
+    }
+  }], [{
+    key: "getDerivedStateFromError",
+    value: function getDerivedStateFromError() {
+      return {
+        hasError: true
+      };
+    }
+  }]);
+
+  return ErrorBoundary;
+}(React__default['default'].Component);
+
 var Toast = function Toast(props) {
   var toastList = props.toastList,
       position = props.position,
@@ -1320,30 +1447,26 @@ var Toast = function Toast(props) {
     setList(_toConsumableArray(list));
   };
 
-  return /*#__PURE__*/React__default['default'].createElement(ToastWrapper, {
+  return /*#__PURE__*/React__default['default'].createElement(ErrorBoundary, null, /*#__PURE__*/React__default['default'].createElement(ToastWrapper, {
     animation: animation
   }, /*#__PURE__*/React__default['default'].createElement("div", {
     className: "notification-container ".concat(position)
   }, list.map(function (toast, i) {
     return /*#__PURE__*/React__default['default'].createElement("div", {
-      key: i,
+      key: toast.id,
       className: "notification toast ".concat(position),
       style: {
         backgroundColor: toast.backgroundColor,
-        padding: toast.toastPadding ? toast.toastPadding : "30px 20px 20px 25px"
+        padding: toast.toastPadding
       }
     }, /*#__PURE__*/React__default['default'].createElement("button", {
       onClick: function onClick() {
         return deleteToast(toast.id);
-      },
-      style: {
-        color: toast.titleColor
       }
     }, "X"), /*#__PURE__*/React__default['default'].createElement("div", {
       className: "notification-image"
     }, /*#__PURE__*/React__default['default'].createElement("img", {
-      src: toast.icon,
-      alt: ""
+      src: toast.icon
     })), /*#__PURE__*/React__default['default'].createElement("div", null, /*#__PURE__*/React__default['default'].createElement("p", {
       className: "notification-title",
       style: {
@@ -1352,11 +1475,12 @@ var Toast = function Toast(props) {
     }, toast.title), /*#__PURE__*/React__default['default'].createElement("p", {
       className: "notification-message"
     }, toast.description)));
-  })));
+  }))));
 };
 Toast.defaultProps = {
   position: "bottom-right",
-  autoDelete: false
+  autoDelete: true,
+  autoDeleteTime: 3000
 };
 Toast.propTypes = {
   toastList: propTypes.array.isRequired,
@@ -1385,16 +1509,25 @@ var Portal = function Portal(_ref) {
 };
 
 var ToastContainer = function ToastContainer(props) {
+  console.log(props);
   return /*#__PURE__*/React__default['default'].createElement(Portal, null, props.children);
 };
 
-var errorIcon = "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2264%22%20height%3D%2264%22%20viewBox%3D%220%200%2064%2064%22%3E%3Cdefs%3E%3Cstyle%3E.a%7Bfill%3A%23fff%3B%7D%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20transform%3D%22translate%280.198%200.198%29%22%3E%3Cpath%20class%3D%22a%22%20d%3D%22M63.8%2C59.986%2C52.321%2C48.5a29.7%2C29.7%2C0%2C1%2C0-3.816%2C3.816L59.988%2C63.8ZM5.262%2C29.533A24.271%2C24.271%2C0%2C1%2C1%2C29.533%2C53.8%2C24.271%2C24.271%2C0%2C0%2C1%2C5.262%2C29.533Z%22%20transform%3D%22translate%280%200%29%22%2F%3E%3Cpath%20class%3D%22a%22%20d%3D%22M67.251%2C55.566a2.734%2C2.734%2C0%2C0%2C0-2.445-1.511h-.784a18.942%2C18.942%2C0%2C0%2C0%2C.59-2.734h5.661V45.853H64.612a18.941%2C18.941%2C0%2C0%2C0-.59-2.734h.784a2.734%2C2.734%2C0%2C0%2C0%2C2.445-1.511l2.734-5.468L65.094%2C33.7l-1.978%2C3.956h-1.8a14.916%2C14.916%2C0%2C0%2C0-2.49-2.619%2C8.2%2C8.2%2C0%2C1%2C0-15.375%2C0%2C14.924%2C14.924%2C0%2C0%2C0-2.489%2C2.619h-1.8L37.179%2C33.7l-4.89%2C2.445%2C2.734%2C5.468a2.734%2C2.734%2C0%2C0%2C0%2C2.445%2C1.511h.784a18.942%2C18.942%2C0%2C0%2C0-.59%2C2.734H32v5.468h5.661a18.942%2C18.942%2C0%2C0%2C0%2C.59%2C2.734h-.784a2.734%2C2.734%2C0%2C0%2C0-2.445%2C1.511l-2.734%2C5.468%2C4.89%2C2.445%2C1.978-3.956h1.8A12.778%2C12.778%2C0%2C0%2C0%2C51.137%2C64.99a12.778%2C12.778%2C0%2C0%2C0%2C10.177-5.468h1.8l1.978%2C3.956%2C4.89-2.445ZM48.4%2C32.184a2.734%2C2.734%2C0%2C0%2C1%2C5.468%2C0%2C2.768%2C2.768%2C0%2C0%2C1-.025.325%2C11.461%2C11.461%2C0%2C0%2C0-5.417%2C0A2.766%2C2.766%2C0%2C0%2C1%2C48.4%2C32.184Zm2.734%2C27.338c-4.522%2C0-8.2-4.905-8.2-10.935s3.679-10.935%2C8.2-10.935%2C8.2%2C4.905%2C8.2%2C10.935S55.659%2C59.522%2C51.137%2C59.522Z%22%20transform%3D%22translate%28-21.558%20-15.912%29%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E";
+var errorIcon = "function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }\n\nimport * as React from \"react\";\n\nvar _ref = /*#__PURE__*/React.createElement(\"defs\", null, /*#__PURE__*/React.createElement(\"style\", null, \".error_svg__a{fill:#fff}\"));\n\nvar _ref2 = /*#__PURE__*/React.createElement(\"path\", {\n  className: \"error_svg__a\",\n  d: \"M63.998 60.184L52.519 48.698a29.7 29.7 0 10-3.816 3.816l11.483 11.484zM5.46 29.731a24.271 24.271 0 1124.271 24.267A24.271 24.271 0 015.46 29.731z\"\n});\n\nvar _ref3 = /*#__PURE__*/React.createElement(\"path\", {\n  className: \"error_svg__a\",\n  d: \"M45.891 39.852a2.734 2.734 0 00-2.445-1.511h-.784a18.942 18.942 0 00.59-2.734h5.661v-5.468h-5.661a18.941 18.941 0 00-.59-2.734h.784a2.734 2.734 0 002.445-1.511l2.734-5.468-4.891-2.44-1.978 3.956h-1.8a14.916 14.916 0 00-2.49-2.619 8.2 8.2 0 10-15.375 0 14.924 14.924 0 00-2.489 2.619h-1.8l-1.983-3.956-4.89 2.445 2.734 5.468a2.734 2.734 0 002.445 1.511h.784a18.942 18.942 0 00-.59 2.734H10.64v5.468h5.661a18.942 18.942 0 00.59 2.734h-.784a2.734 2.734 0 00-2.445 1.511l-2.734 5.468 4.89 2.445 1.978-3.956h1.8a12.778 12.778 0 0010.181 5.462 12.778 12.778 0 0010.177-5.468h1.8l1.978 3.956 4.89-2.445zM27.04 16.47a2.734 2.734 0 015.468 0 2.768 2.768 0 01-.025.325 11.461 11.461 0 00-5.417 0 2.766 2.766 0 01-.026-.325zm2.734 27.338c-4.522 0-8.2-4.905-8.2-10.935s3.679-10.935 8.2-10.935 8.2 4.905 8.2 10.935-3.675 10.935-8.197 10.935z\"\n});\n\nfunction SvgError(props) {\n  return /*#__PURE__*/React.createElement(\"svg\", _extends({\n    xmlns: \"http://www.w3.org/2000/svg\",\n    width: 64,\n    height: 64\n  }, props), _ref, _ref2, _ref3);\n}\n\nexport default \"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2264%22%20height%3D%2264%22%20viewBox%3D%220%200%2064%2064%22%3E%3Cdefs%3E%3Cstyle%3E.a%7Bfill%3A%23fff%3B%7D%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20transform%3D%22translate%280.198%200.198%29%22%3E%3Cpath%20class%3D%22a%22%20d%3D%22M63.8%2C59.986%2C52.321%2C48.5a29.7%2C29.7%2C0%2C1%2C0-3.816%2C3.816L59.988%2C63.8ZM5.262%2C29.533A24.271%2C24.271%2C0%2C1%2C1%2C29.533%2C53.8%2C24.271%2C24.271%2C0%2C0%2C1%2C5.262%2C29.533Z%22%20transform%3D%22translate%280%200%29%22%2F%3E%3Cpath%20class%3D%22a%22%20d%3D%22M67.251%2C55.566a2.734%2C2.734%2C0%2C0%2C0-2.445-1.511h-.784a18.942%2C18.942%2C0%2C0%2C0%2C.59-2.734h5.661V45.853H64.612a18.941%2C18.941%2C0%2C0%2C0-.59-2.734h.784a2.734%2C2.734%2C0%2C0%2C0%2C2.445-1.511l2.734-5.468L65.094%2C33.7l-1.978%2C3.956h-1.8a14.916%2C14.916%2C0%2C0%2C0-2.49-2.619%2C8.2%2C8.2%2C0%2C1%2C0-15.375%2C0%2C14.924%2C14.924%2C0%2C0%2C0-2.489%2C2.619h-1.8L37.179%2C33.7l-4.89%2C2.445%2C2.734%2C5.468a2.734%2C2.734%2C0%2C0%2C0%2C2.445%2C1.511h.784a18.942%2C18.942%2C0%2C0%2C0-.59%2C2.734H32v5.468h5.661a18.942%2C18.942%2C0%2C0%2C0%2C.59%2C2.734h-.784a2.734%2C2.734%2C0%2C0%2C0-2.445%2C1.511l-2.734%2C5.468%2C4.89%2C2.445%2C1.978-3.956h1.8A12.778%2C12.778%2C0%2C0%2C0%2C51.137%2C64.99a12.778%2C12.778%2C0%2C0%2C0%2C10.177-5.468h1.8l1.978%2C3.956%2C4.89-2.445ZM48.4%2C32.184a2.734%2C2.734%2C0%2C0%2C1%2C5.468%2C0%2C2.768%2C2.768%2C0%2C0%2C1-.025.325%2C11.461%2C11.461%2C0%2C0%2C0-5.417%2C0A2.766%2C2.766%2C0%2C0%2C1%2C48.4%2C32.184Zm2.734%2C27.338c-4.522%2C0-8.2-4.905-8.2-10.935s3.679-10.935%2C8.2-10.935%2C8.2%2C4.905%2C8.2%2C10.935S55.659%2C59.522%2C51.137%2C59.522Z%22%20transform%3D%22translate%28-21.558%20-15.912%29%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E\";\nexport { SvgError as ReactComponent };";
 
-var infoIcon = "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2264%22%20height%3D%2264%22%20viewBox%3D%220%200%2064%2064%22%3E%3Cdefs%3E%3Cstyle%3E.a%7Bfill%3A%23fff%3B%7D%3C%2Fstyle%3E%3C%2Fdefs%3E%3Ccircle%20class%3D%22a%22%20cx%3D%223.442%22%20cy%3D%223.442%22%20r%3D%223.442%22%20transform%3D%22translate%2828.558%2043.702%29%22%2F%3E%3Cpath%20class%3D%22a%22%20d%3D%22M32%2C0A32%2C32%2C0%2C1%2C0%2C64%2C32%2C31.983%2C31.983%2C0%2C0%2C0%2C32%2C0Zm0%2C59A27%2C27%2C0%2C1%2C1%2C59%2C32%2C26.985%2C26.985%2C0%2C0%2C1%2C32%2C59Z%22%2F%3E%3Cpath%20class%3D%22a%22%20d%3D%22M187.016%2C128.5A11.028%2C11.028%2C0%2C0%2C0%2C176%2C139.516a2.754%2C2.754%2C0%2C0%2C0%2C5.508%2C0%2C5.508%2C5.508%2C0%2C1%2C1%2C5.508%2C5.508%2C2.754%2C2.754%2C0%2C0%2C0-2.754%2C2.754v6.885a2.754%2C2.754%2C0%2C0%2C0%2C5.508%2C0v-4.479a11.016%2C11.016%2C0%2C0%2C0-2.754-21.683Z%22%20transform%3D%22translate%28-155.016%20-113.572%29%22%2F%3E%3C%2Fsvg%3E";
+var infoIcon = "function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }\n\nimport * as React from \"react\";\n\nvar _ref = /*#__PURE__*/React.createElement(\"defs\", null, /*#__PURE__*/React.createElement(\"style\", null, \".info_svg__a{fill:#fff}\"));\n\nvar _ref2 = /*#__PURE__*/React.createElement(\"circle\", {\n  className: \"info_svg__a\",\n  cx: 3.442,\n  cy: 3.442,\n  r: 3.442,\n  transform: \"translate(28.558 43.702)\"\n});\n\nvar _ref3 = /*#__PURE__*/React.createElement(\"path\", {\n  className: \"info_svg__a\",\n  d: \"M32 0a32 32 0 1032 32A31.983 31.983 0 0032 0zm0 59a27 27 0 1127-27 26.985 26.985 0 01-27 27z\"\n});\n\nvar _ref4 = /*#__PURE__*/React.createElement(\"path\", {\n  className: \"info_svg__a\",\n  d: \"M32 14.928a11.028 11.028 0 00-11.016 11.016 2.754 2.754 0 005.508 0A5.508 5.508 0 1132 31.452a2.754 2.754 0 00-2.754 2.754v6.885a2.754 2.754 0 005.508 0v-4.479A11.016 11.016 0 0032 14.929z\"\n});\n\nfunction SvgInfo(props) {\n  return /*#__PURE__*/React.createElement(\"svg\", _extends({\n    xmlns: \"http://www.w3.org/2000/svg\",\n    width: 64,\n    height: 64\n  }, props), _ref, _ref2, _ref3, _ref4);\n}\n\nexport default \"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2264%22%20height%3D%2264%22%20viewBox%3D%220%200%2064%2064%22%3E%3Cdefs%3E%3Cstyle%3E.a%7Bfill%3A%23fff%3B%7D%3C%2Fstyle%3E%3C%2Fdefs%3E%3Ccircle%20class%3D%22a%22%20cx%3D%223.442%22%20cy%3D%223.442%22%20r%3D%223.442%22%20transform%3D%22translate%2828.558%2043.702%29%22%2F%3E%3Cpath%20class%3D%22a%22%20d%3D%22M32%2C0A32%2C32%2C0%2C1%2C0%2C64%2C32%2C31.983%2C31.983%2C0%2C0%2C0%2C32%2C0Zm0%2C59A27%2C27%2C0%2C1%2C1%2C59%2C32%2C26.985%2C26.985%2C0%2C0%2C1%2C32%2C59Z%22%2F%3E%3Cpath%20class%3D%22a%22%20d%3D%22M187.016%2C128.5A11.028%2C11.028%2C0%2C0%2C0%2C176%2C139.516a2.754%2C2.754%2C0%2C0%2C0%2C5.508%2C0%2C5.508%2C5.508%2C0%2C1%2C1%2C5.508%2C5.508%2C2.754%2C2.754%2C0%2C0%2C0-2.754%2C2.754v6.885a2.754%2C2.754%2C0%2C0%2C0%2C5.508%2C0v-4.479a11.016%2C11.016%2C0%2C0%2C0-2.754-21.683Z%22%20transform%3D%22translate%28-155.016%20-113.572%29%22%2F%3E%3C%2Fsvg%3E\";\nexport { SvgInfo as ReactComponent };";
 
-var warningIcon = "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2264%22%20height%3D%2264%22%20viewBox%3D%220%200%2064%2064%22%3E%3Cg%20transform%3D%22translate%280%20-20.882%29%22%3E%3Cg%20transform%3D%22translate%280%2020.882%29%22%3E%3Cpath%20d%3D%22M221.823%2C333.382a3.6%2C3.6%2C0%2C0%2C0%2C0%2C7.2%2C3.6%2C3.6%2C0%2C0%2C0%2C0-7.2Z%22%20transform%3D%22translate%28-189.82%20-288.408%29%22%2F%3E%3Cpath%20d%3D%22M62.442%2C78.607a13.288%2C13.288%2C0%2C0%2C0%2C.026-12.434l-20.6-39.03a10.891%2C10.891%2C0%2C0%2C0-19.708-.014L1.529%2C66.2a13.4%2C13.4%2C0%2C0%2C0%2C.039%2C12.506A11.117%2C11.117%2C0%2C0%2C0%2C11.4%2C84.882H52.549A11.2%2C11.2%2C0%2C0%2C0%2C62.442%2C78.607Zm-4.473-2.821a6.142%2C6.142%2C0%2C0%2C1-5.433%2C3.44H11.383a6.054%2C6.054%2C0%2C0%2C1-5.368-3.368A7.366%2C7.366%2C0%2C0%2C1%2C6%2C68.993L26.631%2C29.934a5.944%2C5.944%2C0%2C0%2C1%2C10.762.014L58.009%2C69.008A7.268%2C7.268%2C0%2C0%2C1%2C57.969%2C75.786Z%22%20transform%3D%22translate%280%20-20.882%29%22%2F%3E%3Cpath%20d%3D%22M220.5%2C157.278a3.913%2C3.913%2C0%2C0%2C0-2.778%2C3.929c.086%2C1.137.158%2C2.288.245%2C3.425.245%2C4.332.489%2C8.577.734%2C12.909a2.636%2C2.636%2C0%2C0%2C0%2C2.691%2C2.533%2C2.691%2C2.691%2C0%2C0%2C0%2C2.691-2.619c0-.892%2C0-1.713.086-2.619.158-2.778.331-5.555.489-8.333.086-1.8.245-3.6.331-5.4a4.444%2C4.444%2C0%2C0%2C0-.331-1.8A3.607%2C3.607%2C0%2C0%2C0%2C220.5%2C157.278Z%22%20transform%3D%22translate%28-189.392%20-137.561%29%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E";
+var warningIcon = "function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }\n\nimport * as React from \"react\";\n\nvar _ref = /*#__PURE__*/React.createElement(\"path\", {\n  d: \"M32.003 44.974a3.6 3.6 0 000 7.2 3.6 3.6 0 000-7.2z\"\n});\n\nvar _ref2 = /*#__PURE__*/React.createElement(\"path\", {\n  d: \"M62.442 57.725a13.288 13.288 0 00.026-12.434l-20.6-39.03a10.891 10.891 0 00-19.708-.014L1.529 45.318a13.4 13.4 0 00.039 12.506A11.117 11.117 0 0011.4 64h41.149a11.2 11.2 0 009.893-6.275zm-4.473-2.821a6.142 6.142 0 01-5.433 3.44H11.383a6.054 6.054 0 01-5.368-3.368A7.366 7.366 0 016 48.111L26.631 9.052a5.944 5.944 0 0110.762.014l20.616 39.06a7.268 7.268 0 01-.04 6.778z\"\n});\n\nvar _ref3 = /*#__PURE__*/React.createElement(\"path\", {\n  d: \"M31.108 19.717a3.913 3.913 0 00-2.778 3.929c.086 1.137.158 2.288.245 3.425.245 4.332.489 8.577.734 12.909A2.636 2.636 0 0032 42.513a2.691 2.691 0 002.691-2.619c0-.892 0-1.713.086-2.619.158-2.778.331-5.555.489-8.333.086-1.8.245-3.6.331-5.4a4.444 4.444 0 00-.331-1.8 3.607 3.607 0 00-4.158-2.025z\"\n});\n\nfunction SvgWarning(props) {\n  return /*#__PURE__*/React.createElement(\"svg\", _extends({\n    xmlns: \"http://www.w3.org/2000/svg\",\n    width: 64,\n    height: 64\n  }, props), _ref, _ref2, _ref3);\n}\n\nexport default \"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2264%22%20height%3D%2264%22%20viewBox%3D%220%200%2064%2064%22%3E%3Cg%20transform%3D%22translate%280%20-20.882%29%22%3E%3Cg%20transform%3D%22translate%280%2020.882%29%22%3E%3Cpath%20d%3D%22M221.823%2C333.382a3.6%2C3.6%2C0%2C0%2C0%2C0%2C7.2%2C3.6%2C3.6%2C0%2C0%2C0%2C0-7.2Z%22%20transform%3D%22translate%28-189.82%20-288.408%29%22%2F%3E%3Cpath%20d%3D%22M62.442%2C78.607a13.288%2C13.288%2C0%2C0%2C0%2C.026-12.434l-20.6-39.03a10.891%2C10.891%2C0%2C0%2C0-19.708-.014L1.529%2C66.2a13.4%2C13.4%2C0%2C0%2C0%2C.039%2C12.506A11.117%2C11.117%2C0%2C0%2C0%2C11.4%2C84.882H52.549A11.2%2C11.2%2C0%2C0%2C0%2C62.442%2C78.607Zm-4.473-2.821a6.142%2C6.142%2C0%2C0%2C1-5.433%2C3.44H11.383a6.054%2C6.054%2C0%2C0%2C1-5.368-3.368A7.366%2C7.366%2C0%2C0%2C1%2C6%2C68.993L26.631%2C29.934a5.944%2C5.944%2C0%2C0%2C1%2C10.762.014L58.009%2C69.008A7.268%2C7.268%2C0%2C0%2C1%2C57.969%2C75.786Z%22%20transform%3D%22translate%280%20-20.882%29%22%2F%3E%3Cpath%20d%3D%22M220.5%2C157.278a3.913%2C3.913%2C0%2C0%2C0-2.778%2C3.929c.086%2C1.137.158%2C2.288.245%2C3.425.245%2C4.332.489%2C8.577.734%2C12.909a2.636%2C2.636%2C0%2C0%2C0%2C2.691%2C2.533%2C2.691%2C2.691%2C0%2C0%2C0%2C2.691-2.619c0-.892%2C0-1.713.086-2.619.158-2.778.331-5.555.489-8.333.086-1.8.245-3.6.331-5.4a4.444%2C4.444%2C0%2C0%2C0-.331-1.8A3.607%2C3.607%2C0%2C0%2C0%2C220.5%2C157.278Z%22%20transform%3D%22translate%28-189.392%20-137.561%29%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E\";\nexport { SvgWarning as ReactComponent };";
 
-var succsessIcon = "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2264%22%20height%3D%2264%22%20viewBox%3D%220%200%2064%2064%22%3E%3Cdefs%3E%3Cstyle%3E.a%7Bfill%3A%23fff%3B%7D%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cpath%20class%3D%22a%22%20d%3D%22M32%2C0A32%2C32%2C0%2C1%2C0%2C64%2C32%2C32.036%2C32.036%2C0%2C0%2C0%2C32%2C0Zm0%2C61.538A29.538%2C29.538%2C0%2C1%2C1%2C61.538%2C32%2C29.573%2C29.573%2C0%2C0%2C1%2C32%2C61.538Z%22%2F%3E%3Cpath%20class%3D%22a%22%20d%3D%22M49.5%2C15.336%2C27.547%2C32.626%2C14.32%2C25.219a1.873%2C1.873%2C0%2C0%2C0-2.007.156.817.817%2C0%2C0%2C0%2C.223%2C1.406l14.286%2C8a1.846%2C1.846%2C0%2C0%2C0%2C.893.219%2C1.748%2C1.748%2C0%2C0%2C0%2C1.069-.336l22.857-18a.809.809%2C0%2C0%2C0-.119-1.411A1.882%2C1.882%2C0%2C0%2C0%2C49.5%2C15.336Z%22%20transform%3D%22translate%280%205.625%29%22%2F%3E%3C%2Fsvg%3E";
+var succsessIcon = "function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }\n\nimport * as React from \"react\";\n\nvar _ref = /*#__PURE__*/React.createElement(\"defs\", null, /*#__PURE__*/React.createElement(\"style\", null, \".success_svg__a{fill:#fff}\"));\n\nvar _ref2 = /*#__PURE__*/React.createElement(\"path\", {\n  className: \"success_svg__a\",\n  d: \"M32 0a32 32 0 1032 32A32.036 32.036 0 0032 0zm0 61.538A29.538 29.538 0 1161.538 32 29.573 29.573 0 0132 61.538z\"\n});\n\nvar _ref3 = /*#__PURE__*/React.createElement(\"path\", {\n  className: \"success_svg__a\",\n  d: \"M49.5 20.961l-21.953 17.29-13.227-7.407a1.873 1.873 0 00-2.007.156.817.817 0 00.223 1.406l14.286 8a1.846 1.846 0 00.893.219 1.748 1.748 0 001.069-.336l22.857-18a.809.809 0 00-.119-1.411 1.882 1.882 0 00-2.022.083z\"\n});\n\nfunction SvgSuccess(props) {\n  return /*#__PURE__*/React.createElement(\"svg\", _extends({\n    xmlns: \"http://www.w3.org/2000/svg\",\n    width: 64,\n    height: 64\n  }, props), _ref, _ref2, _ref3);\n}\n\nexport default \"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2264%22%20height%3D%2264%22%20viewBox%3D%220%200%2064%2064%22%3E%3Cdefs%3E%3Cstyle%3E.a%7Bfill%3A%23fff%3B%7D%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cpath%20class%3D%22a%22%20d%3D%22M32%2C0A32%2C32%2C0%2C1%2C0%2C64%2C32%2C32.036%2C32.036%2C0%2C0%2C0%2C32%2C0Zm0%2C61.538A29.538%2C29.538%2C0%2C1%2C1%2C61.538%2C32%2C29.573%2C29.573%2C0%2C0%2C1%2C32%2C61.538Z%22%2F%3E%3Cpath%20class%3D%22a%22%20d%3D%22M49.5%2C15.336%2C27.547%2C32.626%2C14.32%2C25.219a1.873%2C1.873%2C0%2C0%2C0-2.007.156.817.817%2C0%2C0%2C0%2C.223%2C1.406l14.286%2C8a1.846%2C1.846%2C0%2C0%2C0%2C.893.219%2C1.748%2C1.748%2C0%2C0%2C0%2C1.069-.336l22.857-18a.809.809%2C0%2C0%2C0-.119-1.411A1.882%2C1.882%2C0%2C0%2C0%2C49.5%2C15.336Z%22%20transform%3D%22translate%280%205.625%29%22%2F%3E%3C%2Fsvg%3E\";\nexport { SvgSuccess as ReactComponent };";
+
+var WHITE = "#FFFFFF";
+var GREEN = "#5cb85c";
+var RED = "#d9534f";
+var PURPLE = "#9A40D3";
+var BLACK = "#000000";
+var YELOW = "#F4E048";
+var GREY = "#f2f2f2";
 
 var toastList = [];
 
@@ -1423,9 +1556,9 @@ var _Toast = /*#__PURE__*/function () {
           toastProperties = _objectSpread2(_objectSpread2({}, toastProperties), {}, {
             id: toastId ? toastId : id,
             title: title ? title : "Success",
-            titleColor: titleColor ? titleColor : "#FFFFFF",
+            titleColor: titleColor ? titleColor : WHITE,
             description: description ? description : "",
-            backgroundColor: backgroundColor ? backgroundColor : "#5cb85c",
+            backgroundColor: backgroundColor ? backgroundColor : GREEN,
             icon: icon ? icon : succsessIcon,
             toastPadding: padding
           });
@@ -1435,9 +1568,9 @@ var _Toast = /*#__PURE__*/function () {
           toastProperties = _objectSpread2(_objectSpread2({}, toastProperties), {}, {
             id: toastId ? toastId : id,
             title: title ? title : "Error",
-            titleColor: titleColor ? titleColor : "#FFFFFF",
+            titleColor: titleColor ? titleColor : WHITE,
             description: description ? description : "",
-            backgroundColor: backgroundColor ? backgroundColor : "#d9534f",
+            backgroundColor: backgroundColor ? backgroundColor : RED,
             icon: icon ? icon : errorIcon,
             toastPadding: padding
           });
@@ -1447,9 +1580,9 @@ var _Toast = /*#__PURE__*/function () {
           toastProperties = _objectSpread2(_objectSpread2({}, toastProperties), {}, {
             id: toastId ? toastId : id,
             title: title ? title : "Info",
-            titleColor: titleColor ? titleColor : "#FFFFFF",
+            titleColor: titleColor ? titleColor : WHITE,
             description: description ? description : "",
-            backgroundColor: backgroundColor ? backgroundColor : "#9A40D3",
+            backgroundColor: backgroundColor ? backgroundColor : PURPLE,
             icon: icon ? icon : infoIcon,
             toastPadding: padding
           });
@@ -1459,9 +1592,9 @@ var _Toast = /*#__PURE__*/function () {
           toastProperties = _objectSpread2(_objectSpread2({}, toastProperties), {}, {
             id: toastId ? toastId : id,
             title: title ? title : "Warning",
-            titleColor: titleColor ? titleColor : "#000000",
+            titleColor: titleColor ? titleColor : BLACK,
             description: description ? description : "",
-            backgroundColor: backgroundColor ? backgroundColor : "#F4E048",
+            backgroundColor: backgroundColor ? backgroundColor : YELOW,
             icon: icon ? icon : warningIcon,
             toastPadding: padding
           });
@@ -1471,9 +1604,9 @@ var _Toast = /*#__PURE__*/function () {
           toastProperties = _objectSpread2(_objectSpread2({}, toastProperties), {}, {
             id: toastId ? toastId : id,
             title: title ? title : "Custom",
-            titleColor: titleColor ? titleColor : "#000000",
-            description: description ? description : "description text message",
-            backgroundColor: backgroundColor ? backgroundColor : "#f2f2f2",
+            titleColor: titleColor ? titleColor : BLACK,
+            description: description ? description : "",
+            backgroundColor: backgroundColor ? backgroundColor : GREY,
             icon: icon ? icon : succsessIcon,
             toastPadding: padding
           });
