@@ -1,4 +1,4 @@
-import { toast } from "../container/ToastCore";
+import { toast } from "../container/ToastCore"
 
 export default {
   title: "Toast",
@@ -28,7 +28,7 @@ export default {
     animation: {
       control: {
         type: "inline-radio",
-        options: ["toast-from-top", "toast-from-bottom", ""],
+        options: ["toast-from-top", "toast-from-bottom", "toast-in-right ", "toast-in-left"],
       },
     },
     title: {
@@ -54,9 +54,9 @@ export default {
 
 
   },
-};
+}
 
-export const ToastExample = (args) =>
+export const ToastExample = args =>
   toast.showToast(
     args.toastType,
     {
@@ -70,8 +70,8 @@ export const ToastExample = (args) =>
     args.toastPosition,
     args.toastIsAutoDelete,
     args.toastAutoDeleteTime,
-    args.animation
-  );
+    args.animation,
+  )
 
 ToastExample.args = {
   toastType: "error",
@@ -83,4 +83,4 @@ ToastExample.args = {
   titleColor: "",
   description: "toast description",
   backgroundColor: "",
-};
+}
