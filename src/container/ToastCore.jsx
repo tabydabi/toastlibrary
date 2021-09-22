@@ -13,7 +13,17 @@ import {
   BLACK,
   YELOW,
   GREY,
-} from "../constants/colors"
+  SUCCESS,
+  ERROR, 
+  INFO, 
+  WARNING,
+  SUCCESS_TITLE,
+  WARNING_TITLE,
+  ERROR_TITLE,
+  INFO_TITLE,
+  CUSTOM_TITLE,
+} from "../constants/index"
+
 
 let toastList = []
 
@@ -43,11 +53,11 @@ class _Toast {
     const id = Math.floor(Math.random() * 101 + 1)
 
     switch (toastType) {
-      case "success":
+      case SUCCESS:
         toastProperties = {
           ...toastProperties,
           id: toastId || id,
-          title: title || "Success",
+          title: title || SUCCESS_TITLE,
           titleColor: titleColor || WHITE,
           description: description || "",
           backgroundColor: backgroundColor || GREEN,
@@ -55,11 +65,11 @@ class _Toast {
           toastPadding: padding,
         }
         break
-      case "error":
+      case ERROR:
         toastProperties = {
           ...toastProperties,
           id: toastId || id,
-          title: title || "Error",
+          title: title || ERROR_TITLE,
           titleColor: titleColor || WHITE,
           description: description || "",
           backgroundColor: backgroundColor || RED,
@@ -67,11 +77,11 @@ class _Toast {
           toastPadding: padding,
         }
         break
-      case "info":
+      case INFO:
         toastProperties = {
           ...toastProperties,
           id: toastId || id,
-          title: title || "Info",
+          title: title || INFO_TITLE,
           titleColor: titleColor || WHITE,
           description: description || "",
           backgroundColor: backgroundColor || PURPLE,
@@ -79,11 +89,11 @@ class _Toast {
           toastPadding: padding,
         }
         break
-      case "warning":
+      case WARNING:
         toastProperties = {
           ...toastProperties,
           id: toastId || id,
-          title: title || "Warning",
+          title: title || WARNING_TITLE,
           titleColor: titleColor || BLACK,
           description: description || "",
           backgroundColor: backgroundColor || YELOW,
@@ -95,7 +105,7 @@ class _Toast {
         toastProperties = {
           ...toastProperties,
           id: toastId || id,
-          title: title || "Custom",
+          title: title || CUSTOM_TITLE,
           titleColor: titleColor || BLACK,
           description: description || "",
           backgroundColor: backgroundColor || GREY,
