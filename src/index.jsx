@@ -1,1 +1,1 @@
-export { toast } from "./container/ToastCore";
+export { toast } from "./container/ToastCore"

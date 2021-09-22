@@ -1,36 +1,36 @@
-import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
-import { ToastWrapper } from "./styles";
-import { ErrorBoundary } from "../ErrorBoundary/ErrorBoundary";
+import React, { useState, useEffect } from "react"
+import PropTypes from "prop-types"
+import { ToastWrapper } from "./styles"
+import { ErrorBoundary } from "../ErrorBoundary/ErrorBoundary"
 
 
-export const Toast = (props) => {
-  const { toastList, position, autoDelete, autoDeleteTime, animation } = props;
-  const [list, setList] = useState([toastList]);
+export const Toast = props => {
+  const { toastList, position, autoDelete, autoDeleteTime, animation } = props
+  const [list, setList] = useState([toastList])
 
   useEffect(() => {
-    setList([...toastList]);
-  }, [toastList]);
+    setList([...toastList])
+  }, [toastList])
 
   useEffect(() => {
     const interval = setInterval(() => {
       if (autoDelete && toastList.length && list.length) {
-        deleteToast(toastList[0].id);
+        deleteToast(toastList[0].id)
       }
-    }, autoDeleteTime);
+    }, autoDeleteTime)
 
     return () => {
-      clearInterval(interval);
-    };
-  }, [toastList, autoDelete, autoDeleteTime, list]);
+      clearInterval(interval)
+    }
+  }, [toastList, autoDelete, autoDeleteTime, list])
 
-  const deleteToast = (id) => {
-    const listItemIndex = list.findIndex((e) => e.id === id);
-    const toastListItem = toastList.findIndex((e) => e.id === id);
-    list.splice(listItemIndex, 1);
-    toastList.splice(toastListItem, 1);
-    setList([...list]);
-  };
+  const deleteToast = id => {
+    const listItemIndex = list.findIndex(e => e.id === id)
+    const toastListItem = toastList.findIndex(e => e.id === id)
+    list.splice(listItemIndex, 1)
+    toastList.splice(toastListItem, 1)
+    setList([...list])
+  }
 
   
 
@@ -38,7 +38,7 @@ export const Toast = (props) => {
     <ErrorBoundary>
     <ToastWrapper animation={animation}>
       <div className={`notification-container ${position}`}>
-        {list.map((toast) => (
+        {list.map(toast => (
           <div
             key={toast.id + 1}
             className={`notification toast ${position}`}
@@ -67,20 +67,19 @@ export const Toast = (props) => {
       </div>
     </ToastWrapper>
     </ErrorBoundary>
-  );
-};
+  )
+}
 
 Toast.defaultProps = {
   position: "bottom-right",
   autoDelete: true,
   autoDeleteTime: 3000,
-};
+}
 
 Toast.propTypes = {
   toastList: PropTypes.array.isRequired,
   position: PropTypes.string,
   autoDelete: PropTypes.bool,
   autoDeleteTime: PropTypes.number,
-  toastPadding: PropTypes.string,
   animation: PropTypes.string,
-};
+}
