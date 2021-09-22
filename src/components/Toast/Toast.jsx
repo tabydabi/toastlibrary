@@ -33,7 +33,6 @@ export const Toast = props => {
   }
 
   
-
   return (
     <ErrorBoundary>
     <ToastWrapper animation={animation}>
@@ -47,7 +46,13 @@ export const Toast = props => {
               padding: toast.toastPadding,
             }}
           >
-            <button onClick = {() => deleteToast(toast.id)}>X</button>
+            <button onClick = {() => deleteToast(toast.id)}
+            style={{
+              color: toast.titleColor,
+              }}
+              >
+                X
+            </button>
             <div className="notification-image">
               <img src={toast.icon} />
             </div>
