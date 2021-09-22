@@ -8,13 +8,12 @@ import url from "rollup-plugin-url"
 import alias from "@rollup/plugin-alias"
 import path from 'path'
 
-const root = path.resolve(__dirname);
 
 export default {
   input: "src/index.jsx",
   output: {
     file: "dist/bundles/bundle.js",
-    format: "iife",
+    format: "cjs",
   },
   external: ["react", "react-dom", "styled-components"],
   plugins: [
@@ -24,11 +23,7 @@ export default {
     svgr(),
     alias(
       {
-          resolve: ['*', '.js', '.jsx', '.svg'],
-          entries: [{
-              find: '@',
-              replacement: './src',
-          }]
+         '@src': path.resolve(__dirname, 'src/*'),
       }
   ),
     svg(),

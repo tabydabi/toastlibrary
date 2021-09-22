@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from "styled-components"
 
 export const ToastWrapper = styled.div`
   .notification-container {
@@ -12,7 +12,7 @@ export const ToastWrapper = styled.div`
     top: 12px;
     right: 12px;
     transition: transform 0.6s ease-in-out;
-    animation: ${(props) =>
+    animation: ${props =>
         props.animation ? props.animation : "toast-in-right"}
       0.7s;
   }
@@ -21,7 +21,7 @@ export const ToastWrapper = styled.div`
     bottom: 12px;
     right: 12px;
     transition: transform 0.6s ease-in-out;
-    animation: ${(props) =>
+    animation: ${props =>
         props.animation ? props.animation : "toast-in-right"}
       0.7s;
   }
@@ -30,7 +30,7 @@ export const ToastWrapper = styled.div`
     top: 12px;
     left: 12px;
     transition: transform 0.6s ease-in;
-    animation: ${(props) =>
+    animation: ${props =>
         props.animation ? props.animation : "toast-in-left"}
       0.7s;
   }
@@ -39,7 +39,7 @@ export const ToastWrapper = styled.div`
     bottom: 12px;
     left: 12px;
     transition: transform 0.6s ease-in;
-    animation: ${(props) =>
+    animation: ${props =>
         props.animation ? props.animation : "toast-in-left"}
       0.7s;
   }
@@ -165,4 +165,4 @@ export const ToastWrapper = styled.div`
       transform: translateX(0);
     }
   }
-`;
+`

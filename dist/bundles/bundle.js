@@ -1451,9 +1451,9 @@ var Toast = function Toast(props) {
     animation: animation
   }, /*#__PURE__*/React__default['default'].createElement("div", {
     className: "notification-container ".concat(position)
-  }, list.map(function (toast, i) {
+  }, list.map(function (toast) {
     return /*#__PURE__*/React__default['default'].createElement("div", {
-      key: toast.id,
+      key: toast.id + 1,
       className: "notification toast ".concat(position),
       style: {
         backgroundColor: toast.backgroundColor,
@@ -1462,6 +1462,9 @@ var Toast = function Toast(props) {
     }, /*#__PURE__*/React__default['default'].createElement("button", {
       onClick: function onClick() {
         return deleteToast(toast.id);
+      },
+      style: {
+        color: toast.titleColor
       }
     }, "X"), /*#__PURE__*/React__default['default'].createElement("div", {
       className: "notification-image"
@@ -1487,7 +1490,6 @@ Toast.propTypes = {
   position: propTypes.string,
   autoDelete: propTypes.bool,
   autoDeleteTime: propTypes.number,
-  toastPadding: propTypes.string,
   animation: propTypes.string
 };
 
@@ -1509,7 +1511,6 @@ var Portal = function Portal(_ref) {
 };
 
 var ToastContainer = function ToastContainer(props) {
-  console.log(props);
   return /*#__PURE__*/React__default['default'].createElement(Portal, null, props.children);
 };
 
@@ -1528,6 +1529,17 @@ var PURPLE = "#9A40D3";
 var BLACK = "#000000";
 var YELOW = "#F4E048";
 var GREY = "#f2f2f2";
+
+var SUCCESS = "success";
+var ERROR = "error";
+var INFO = "info";
+var WARNING = "warning";
+
+var SUCCESS_TITLE = "Success";
+var ERROR_TITLE = "Error";
+var INFO_TITLE = "Info";
+var WARNING_TITLE = "Warning";
+var CUSTOM_TITLE = "Custom";
 
 var toastList = [];
 
@@ -1552,62 +1564,62 @@ var _Toast = /*#__PURE__*/function () {
       var id = Math.floor(Math.random() * 101 + 1);
 
       switch (toastType) {
-        case "success":
+        case SUCCESS:
           toastProperties = _objectSpread2(_objectSpread2({}, toastProperties), {}, {
-            id: toastId ? toastId : id,
-            title: title ? title : "Success",
-            titleColor: titleColor ? titleColor : WHITE,
-            description: description ? description : "",
-            backgroundColor: backgroundColor ? backgroundColor : GREEN,
-            icon: icon ? icon : succsessIcon,
+            id: toastId || id,
+            title: title || SUCCESS_TITLE,
+            titleColor: titleColor || WHITE,
+            description: description || "",
+            backgroundColor: backgroundColor || GREEN,
+            icon: icon || succsessIcon,
             toastPadding: padding
           });
           break;
 
-        case "error":
+        case ERROR:
           toastProperties = _objectSpread2(_objectSpread2({}, toastProperties), {}, {
-            id: toastId ? toastId : id,
-            title: title ? title : "Error",
-            titleColor: titleColor ? titleColor : WHITE,
-            description: description ? description : "",
-            backgroundColor: backgroundColor ? backgroundColor : RED,
-            icon: icon ? icon : errorIcon,
+            id: toastId || id,
+            title: title || ERROR_TITLE,
+            titleColor: titleColor || WHITE,
+            description: description || "",
+            backgroundColor: backgroundColor || RED,
+            icon: icon || errorIcon,
             toastPadding: padding
           });
           break;
 
-        case "info":
+        case INFO:
           toastProperties = _objectSpread2(_objectSpread2({}, toastProperties), {}, {
-            id: toastId ? toastId : id,
-            title: title ? title : "Info",
-            titleColor: titleColor ? titleColor : WHITE,
-            description: description ? description : "",
-            backgroundColor: backgroundColor ? backgroundColor : PURPLE,
-            icon: icon ? icon : infoIcon,
+            id: toastId || id,
+            title: title || INFO_TITLE,
+            titleColor: titleColor || WHITE,
+            description: description || "",
+            backgroundColor: backgroundColor || PURPLE,
+            icon: icon || infoIcon,
             toastPadding: padding
           });
           break;
 
-        case "warning":
+        case WARNING:
           toastProperties = _objectSpread2(_objectSpread2({}, toastProperties), {}, {
-            id: toastId ? toastId : id,
-            title: title ? title : "Warning",
-            titleColor: titleColor ? titleColor : BLACK,
-            description: description ? description : "",
-            backgroundColor: backgroundColor ? backgroundColor : YELOW,
-            icon: icon ? icon : warningIcon,
+            id: toastId || id,
+            title: title || WARNING_TITLE,
+            titleColor: titleColor || BLACK,
+            description: description || "",
+            backgroundColor: backgroundColor || YELOW,
+            icon: icon || warningIcon,
             toastPadding: padding
           });
           break;
 
         default:
           toastProperties = _objectSpread2(_objectSpread2({}, toastProperties), {}, {
-            id: toastId ? toastId : id,
-            title: title ? title : "Custom",
-            titleColor: titleColor ? titleColor : BLACK,
-            description: description ? description : "",
-            backgroundColor: backgroundColor ? backgroundColor : GREY,
-            icon: icon ? icon : succsessIcon,
+            id: toastId || id,
+            title: title || CUSTOM_TITLE,
+            titleColor: titleColor || BLACK,
+            description: description || "",
+            backgroundColor: backgroundColor || GREY,
+            icon: icon || succsessIcon,
             toastPadding: padding
           });
       }
