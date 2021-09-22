@@ -1645,6 +1645,4 @@ var _Toast = /*#__PURE__*/function () {
 
 var toast = new _Toast(toastList);
 
-exports.Toast = Toast;
-exports.ToastContainer = ToastContainer;
 exports.toast = toast;
