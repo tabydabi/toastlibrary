@@ -1517,6 +1517,7 @@ var WHITE = "#FFFFFF";
 var GREEN = "#5cb85c";
 var RED = "#d9534f";
 var PURPLE = "#9A40D3";
+var BLACK = "#000000";
 var YELOW = "#F4E048";
 
 var SUCCESS = "success";
@@ -1537,7 +1538,7 @@ var _Toast = /*#__PURE__*/function () {
     _classCallCheck(this, _Toast);
 
     if (_Toast.singleton) {
-      throw new Error('Singleton classes cant be instantiated more than once.');
+      throw new Error("Singleton classes cant be instantiated more than once.");
     }
 
     _Toast.singleton = this;
@@ -1568,6 +1569,26 @@ var _Toast = /*#__PURE__*/function () {
 
         default:
           return CUSTOM_TITLE;
+      }
+    }
+  }, {
+    key: "getTitleColor",
+    value: function getTitleColor(properties) {
+      switch (properties.type) {
+        case SUCCESS:
+          return WHITE;
+
+        case ERROR:
+          return WHITE;
+
+        case INFO:
+          return WHITE;
+
+        case WARNING:
+          return BLACK;
+
+        default:
+          return BLACK;
       }
     }
   }, {
@@ -1615,10 +1636,10 @@ var _Toast = /*#__PURE__*/function () {
     value: function getProperty(description, properties) {
       return _objectSpread2(_objectSpread2({}, properties), {}, {
         id: properties.toastId || this.getId(),
-        description: description || 'Message!',
-        toastPadding: properties.padding || '',
+        description: description || "Message!",
+        toastPadding: properties.padding || "",
         title: this.getTitle(properties),
-        titleColor: WHITE,
+        titleColor: this.getTitleColor(properties),
         backgroundColor: this.getBackgroundColor(properties),
         icon: this.getIcon(properties)
       });
