@@ -29,6 +29,10 @@ let toastList = []
 
 class _Toast {
   constructor(toastList) {
+    if(_Toast.singleton){
+      throw new Error('Singleton classes cant be instantiated more than once.')
+    }
+    _Toast.singleton = this
     this.toastList = toastList
   }
 
@@ -130,3 +134,6 @@ class _Toast {
 }
 
 export const toast = new _Toast(toastList)
+
+
+
