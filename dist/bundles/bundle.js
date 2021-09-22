@@ -1,15 +1,6 @@
-'use strict';
-
-Object.defineProperty(exports, '__esModule', { value: true });
-
-var React = require('react');
-var styled = require('styled-components');
-var reactDom = require('react-dom');
-
-function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
-
-var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
-var styled__default = /*#__PURE__*/_interopDefaultLegacy(styled);
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import { createPortal } from 'react-dom';
 
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
@@ -1351,7 +1342,7 @@ if (process.env.NODE_ENV !== 'production') {
 });
 
 var _templateObject;
-var ToastWrapper = styled__default['default'].div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  .notification-container {\n    font-size: 14px;\n    box-sizing: border-box;\n    position: fixed;\n    z-index: 999999;\n  }\n\n  .top-right {\n    top: 12px;\n    right: 12px;\n    transition: transform 0.6s ease-in-out;\n    animation: ", "\n      0.7s;\n  }\n\n  .bottom-right {\n    bottom: 12px;\n    right: 12px;\n    transition: transform 0.6s ease-in-out;\n    animation: ", "\n      0.7s;\n  }\n\n  .top-left {\n    top: 12px;\n    left: 12px;\n    transition: transform 0.6s ease-in;\n    animation: ", "\n      0.7s;\n  }\n\n  .bottom-left {\n    bottom: 12px;\n    left: 12px;\n    transition: transform 0.6s ease-in;\n    animation: ", "\n      0.7s;\n  }\n\n  .notification {\n    background: #fff;\n    transition: 0.3s ease;\n    position: relative;\n    pointer-events: auto;\n    overflow: hidden;\n    margin: 0 0 6px;\n    padding: 30px;\n    margin-bottom: 15px;\n    width: 668px;\n    max-height: 181px;\n    border-radius: 3px 3px 3px 3px;\n    box-shadow: 4px 4px 8px #00000029;\n    border-radius: 24px;\n    color: #000;\n    opacity: 0.9;\n    background-position: 15px;\n    background-repeat: no-repeat;\n  }\n\n  .notification:hover {\n    box-shadow: 0 0 12px #fff;\n    opacity: 1;\n    cursor: pointer;\n  }\n\n  .notification-title {\n    font-family: Helvetica;\n    font-weight: 700;\n    font-size: 24px;\n    text-align: left;\n    margin-top: 0;\n    margin-bottom: 6px;\n    width: 300px;\n    height: 18px;\n  }\n\n  .notification-message {\n    font-family: Helvetica;\n    margin-top: 5px;\n    font-size: 16px;\n    text-align: left;\n    height: 18px;\n    margin-left: -1px;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    white-space: nowrap;\n  }\n\n  .notification-image {\n    float: left;\n    margin-right: 15px;\n    margin-bottom: 15px;\n    margin-top: 7px;\n  }\n\n  .notification-image img {\n    width: 30px;\n    height: 30px;\n  }\n\n  .toast {\n    height: 50px;\n    width: 365px;\n    color: #fff;\n  }\n\n  .notification-container button {\n    position: relative;\n    right: -0.3em;\n    top: -0.3em;\n    float: right;\n    font-weight: 700;\n    color: #fff;\n    outline: none;\n    border: none;\n    text-shadow: 0 1px 0 #fff;\n    opacity: 0.8;\n    line-height: 1;\n    font-size: 16px;\n    padding: 0;\n    cursor: pointer;\n    background: 0 0;\n    border: 0;\n  }\n\n  @keyframes toast-in-right {\n    from {\n      transform: translateX(100%);\n    }\n    to {\n      transform: translateX(0);\n    }\n  }\n\n  @keyframes toast-from-top {\n    from {\n      transform: translateY(-100%);\n    }\n    to {\n      transform: translateY(0);\n    }\n  }\n\n  @keyframes toast-from-bottom {\n    from {\n      transform: translateY(100%);\n    }\n    to {\n      transform: translateY(0);\n    }\n  }\n\n  @keyframes toast-in-left {\n    from {\n      transform: translateX(-100%);\n    }\n    to {\n      transform: translateX(0);\n    }\n  }\n"])), function (props) {
+var ToastWrapper = styled.div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  .notification-container {\n    font-size: 14px;\n    box-sizing: border-box;\n    position: fixed;\n    z-index: 999999;\n  }\n\n  .top-right {\n    top: 12px;\n    right: 12px;\n    transition: transform 0.6s ease-in-out;\n    animation: ", "\n      0.7s;\n  }\n\n  .bottom-right {\n    bottom: 12px;\n    right: 12px;\n    transition: transform 0.6s ease-in-out;\n    animation: ", "\n      0.7s;\n  }\n\n  .top-left {\n    top: 12px;\n    left: 12px;\n    transition: transform 0.6s ease-in;\n    animation: ", "\n      0.7s;\n  }\n\n  .bottom-left {\n    bottom: 12px;\n    left: 12px;\n    transition: transform 0.6s ease-in;\n    animation: ", "\n      0.7s;\n  }\n\n  .notification {\n    background: #fff;\n    transition: 0.3s ease;\n    position: relative;\n    pointer-events: auto;\n    overflow: hidden;\n    margin: 0 0 6px;\n    padding: 30px;\n    margin-bottom: 15px;\n    width: 668px;\n    max-height: 181px;\n    border-radius: 3px 3px 3px 3px;\n    box-shadow: 4px 4px 8px #00000029;\n    border-radius: 24px;\n    color: #000;\n    opacity: 0.9;\n    background-position: 15px;\n    background-repeat: no-repeat;\n  }\n\n  .notification:hover {\n    box-shadow: 0 0 12px #fff;\n    opacity: 1;\n    cursor: pointer;\n  }\n\n  .notification-title {\n    font-family: Helvetica;\n    font-weight: 700;\n    font-size: 24px;\n    text-align: left;\n    margin-top: 0;\n    margin-bottom: 6px;\n    width: 300px;\n    height: 18px;\n  }\n\n  .notification-message {\n    font-family: Helvetica;\n    margin-top: 5px;\n    font-size: 16px;\n    text-align: left;\n    height: 18px;\n    margin-left: -1px;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    white-space: nowrap;\n  }\n\n  .notification-image {\n    float: left;\n    margin-right: 15px;\n    margin-bottom: 15px;\n    margin-top: 7px;\n  }\n\n  .notification-image img {\n    width: 30px;\n    height: 30px;\n  }\n\n  .toast {\n    height: 50px;\n    width: 365px;\n    color: #fff;\n  }\n\n  .notification-container button {\n    position: relative;\n    right: -0.3em;\n    top: -0.3em;\n    float: right;\n    font-weight: 700;\n    color: #fff;\n    outline: none;\n    border: none;\n    text-shadow: 0 1px 0 #fff;\n    opacity: 0.8;\n    line-height: 1;\n    font-size: 16px;\n    padding: 0;\n    cursor: pointer;\n    background: 0 0;\n    border: 0;\n  }\n\n  @keyframes toast-in-right {\n    from {\n      transform: translateX(100%);\n    }\n    to {\n      transform: translateX(0);\n    }\n  }\n\n  @keyframes toast-from-top {\n    from {\n      transform: translateY(-100%);\n    }\n    to {\n      transform: translateY(0);\n    }\n  }\n\n  @keyframes toast-from-bottom {\n    from {\n      transform: translateY(100%);\n    }\n    to {\n      transform: translateY(0);\n    }\n  }\n\n  @keyframes toast-in-left {\n    from {\n      transform: translateX(-100%);\n    }\n    to {\n      transform: translateX(0);\n    }\n  }\n"])), function (props) {
   return props.animation ? props.animation : "toast-in-right";
 }, function (props) {
   return props.animation ? props.animation : "toast-in-right";
@@ -1392,7 +1383,7 @@ var ErrorBoundary = /*#__PURE__*/function (_React$Component) {
     key: "render",
     value: function render() {
       if (this.state.hasError) {
-        return /*#__PURE__*/React__default['default'].createElement("h1", null, "You have some problems: ", this.state.error, ", more info: ", this.state.errorInfo);
+        return /*#__PURE__*/React.createElement("h1", null, "You have some problems: ", this.state.error, ", more info: ", this.state.errorInfo);
       }
 
       return this.props.children;
@@ -1407,7 +1398,7 @@ var ErrorBoundary = /*#__PURE__*/function (_React$Component) {
   }]);
 
   return ErrorBoundary;
-}(React__default['default'].Component);
+}(React.Component);
 
 var Toast = function Toast(props) {
   var toastList = props.toastList,
@@ -1416,15 +1407,15 @@ var Toast = function Toast(props) {
       autoDeleteTime = props.autoDeleteTime,
       animation = props.animation;
 
-  var _useState = React.useState([toastList]),
+  var _useState = useState([toastList]),
       _useState2 = _slicedToArray(_useState, 2),
       list = _useState2[0],
       setList = _useState2[1];
 
-  React.useEffect(function () {
+  useEffect(function () {
     setList(_toConsumableArray(toastList));
   }, [toastList]);
-  React.useEffect(function () {
+  useEffect(function () {
     var interval = setInterval(function () {
       if (autoDelete && toastList.length && list.length) {
         deleteToast(toastList[0].id);
@@ -1447,35 +1438,35 @@ var Toast = function Toast(props) {
     setList(_toConsumableArray(list));
   };
 
-  return /*#__PURE__*/React__default['default'].createElement(ErrorBoundary, null, /*#__PURE__*/React__default['default'].createElement(ToastWrapper, {
+  return /*#__PURE__*/React.createElement(ErrorBoundary, null, /*#__PURE__*/React.createElement(ToastWrapper, {
     animation: animation
-  }, /*#__PURE__*/React__default['default'].createElement("div", {
+  }, /*#__PURE__*/React.createElement("div", {
     className: "notification-container ".concat(position)
   }, list.map(function (toast) {
-    return /*#__PURE__*/React__default['default'].createElement("div", {
+    return /*#__PURE__*/React.createElement("div", {
       key: toast.id + 1,
       className: "notification toast ".concat(position),
       style: {
         backgroundColor: toast.backgroundColor,
         padding: toast.toastPadding
       }
-    }, /*#__PURE__*/React__default['default'].createElement("button", {
+    }, /*#__PURE__*/React.createElement("button", {
       onClick: function onClick() {
         return deleteToast(toast.id);
       },
       style: {
         color: toast.titleColor
       }
-    }, "X"), /*#__PURE__*/React__default['default'].createElement("div", {
+    }, "X"), /*#__PURE__*/React.createElement("div", {
       className: "notification-image"
-    }, /*#__PURE__*/React__default['default'].createElement("img", {
+    }, /*#__PURE__*/React.createElement("img", {
       src: toast.icon
-    })), /*#__PURE__*/React__default['default'].createElement("div", null, /*#__PURE__*/React__default['default'].createElement("p", {
+    })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", {
       className: "notification-title",
       style: {
         color: toast.titleColor
       }
-    }, toast.title), /*#__PURE__*/React__default['default'].createElement("p", {
+    }, toast.title), /*#__PURE__*/React.createElement("p", {
       className: "notification-message"
     }, toast.description)));
   }))));
@@ -1500,18 +1491,18 @@ var Portal = function Portal(_ref) {
   mount.setAttribute("id", "toast-root");
   var el = document.createElement("div");
   el.setAttribute("id", "notification-wrapper");
-  React.useEffect(function () {
+  useEffect(function () {
     mount.appendChild(el);
     return function () {
       mount.removeChild(el);
       document.getElementById("toast-root").remove();
     };
   }, [el, mount]);
-  return /*#__PURE__*/reactDom.createPortal(children, el);
+  return /*#__PURE__*/createPortal(children, el);
 };
 
 var ToastContainer = function ToastContainer(props) {
-  return /*#__PURE__*/React__default['default'].createElement(Portal, null, props.children);
+  return /*#__PURE__*/React.createElement(Portal, null, props.children);
 };
 
 var errorIcon = "function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }\n\nimport * as React from \"react\";\n\nvar _ref = /*#__PURE__*/React.createElement(\"defs\", null, /*#__PURE__*/React.createElement(\"style\", null, \".error_svg__a{fill:#fff}\"));\n\nvar _ref2 = /*#__PURE__*/React.createElement(\"path\", {\n  className: \"error_svg__a\",\n  d: \"M63.998 60.184L52.519 48.698a29.7 29.7 0 10-3.816 3.816l11.483 11.484zM5.46 29.731a24.271 24.271 0 1124.271 24.267A24.271 24.271 0 015.46 29.731z\"\n});\n\nvar _ref3 = /*#__PURE__*/React.createElement(\"path\", {\n  className: \"error_svg__a\",\n  d: \"M45.891 39.852a2.734 2.734 0 00-2.445-1.511h-.784a18.942 18.942 0 00.59-2.734h5.661v-5.468h-5.661a18.941 18.941 0 00-.59-2.734h.784a2.734 2.734 0 002.445-1.511l2.734-5.468-4.891-2.44-1.978 3.956h-1.8a14.916 14.916 0 00-2.49-2.619 8.2 8.2 0 10-15.375 0 14.924 14.924 0 00-2.489 2.619h-1.8l-1.983-3.956-4.89 2.445 2.734 5.468a2.734 2.734 0 002.445 1.511h.784a18.942 18.942 0 00-.59 2.734H10.64v5.468h5.661a18.942 18.942 0 00.59 2.734h-.784a2.734 2.734 0 00-2.445 1.511l-2.734 5.468 4.89 2.445 1.978-3.956h1.8a12.778 12.778 0 0010.181 5.462 12.778 12.778 0 0010.177-5.468h1.8l1.978 3.956 4.89-2.445zM27.04 16.47a2.734 2.734 0 015.468 0 2.768 2.768 0 01-.025.325 11.461 11.461 0 00-5.417 0 2.766 2.766 0 01-.026-.325zm2.734 27.338c-4.522 0-8.2-4.905-8.2-10.935s3.679-10.935 8.2-10.935 8.2 4.905 8.2 10.935-3.675 10.935-8.197 10.935z\"\n});\n\nfunction SvgError(props) {\n  return /*#__PURE__*/React.createElement(\"svg\", _extends({\n    xmlns: \"http://www.w3.org/2000/svg\",\n    width: 64,\n    height: 64\n  }, props), _ref, _ref2, _ref3);\n}\n\nexport default \"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2264%22%20height%3D%2264%22%20viewBox%3D%220%200%2064%2064%22%3E%3Cdefs%3E%3Cstyle%3E.a%7Bfill%3A%23fff%3B%7D%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20transform%3D%22translate%280.198%200.198%29%22%3E%3Cpath%20class%3D%22a%22%20d%3D%22M63.8%2C59.986%2C52.321%2C48.5a29.7%2C29.7%2C0%2C1%2C0-3.816%2C3.816L59.988%2C63.8ZM5.262%2C29.533A24.271%2C24.271%2C0%2C1%2C1%2C29.533%2C53.8%2C24.271%2C24.271%2C0%2C0%2C1%2C5.262%2C29.533Z%22%20transform%3D%22translate%280%200%29%22%2F%3E%3Cpath%20class%3D%22a%22%20d%3D%22M67.251%2C55.566a2.734%2C2.734%2C0%2C0%2C0-2.445-1.511h-.784a18.942%2C18.942%2C0%2C0%2C0%2C.59-2.734h5.661V45.853H64.612a18.941%2C18.941%2C0%2C0%2C0-.59-2.734h.784a2.734%2C2.734%2C0%2C0%2C0%2C2.445-1.511l2.734-5.468L65.094%2C33.7l-1.978%2C3.956h-1.8a14.916%2C14.916%2C0%2C0%2C0-2.49-2.619%2C8.2%2C8.2%2C0%2C1%2C0-15.375%2C0%2C14.924%2C14.924%2C0%2C0%2C0-2.489%2C2.619h-1.8L37.179%2C33.7l-4.89%2C2.445%2C2.734%2C5.468a2.734%2C2.734%2C0%2C0%2C0%2C2.445%2C1.511h.784a18.942%2C18.942%2C0%2C0%2C0-.59%2C2.734H32v5.468h5.661a18.942%2C18.942%2C0%2C0%2C0%2C.59%2C2.734h-.784a2.734%2C2.734%2C0%2C0%2C0-2.445%2C1.511l-2.734%2C5.468%2C4.89%2C2.445%2C1.978-3.956h1.8A12.778%2C12.778%2C0%2C0%2C0%2C51.137%2C64.99a12.778%2C12.778%2C0%2C0%2C0%2C10.177-5.468h1.8l1.978%2C3.956%2C4.89-2.445ZM48.4%2C32.184a2.734%2C2.734%2C0%2C0%2C1%2C5.468%2C0%2C2.768%2C2.768%2C0%2C0%2C1-.025.325%2C11.461%2C11.461%2C0%2C0%2C0-5.417%2C0A2.766%2C2.766%2C0%2C0%2C1%2C48.4%2C32.184Zm2.734%2C27.338c-4.522%2C0-8.2-4.905-8.2-10.935s3.679-10.935%2C8.2-10.935%2C8.2%2C4.905%2C8.2%2C10.935S55.659%2C59.522%2C51.137%2C59.522Z%22%20transform%3D%22translate%28-21.558%20-15.912%29%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E\";\nexport { SvgError as ReactComponent };";
@@ -1547,6 +1538,11 @@ var _Toast = /*#__PURE__*/function () {
   function _Toast(toastList) {
     _classCallCheck(this, _Toast);
 
+    if (_Toast.singleton) {
+      throw new Error('Singleton classes cant be instantiated more than once.');
+    }
+
+    _Toast.singleton = this;
     this.toastList = toastList;
   }
 
@@ -1625,7 +1621,7 @@ var _Toast = /*#__PURE__*/function () {
       }
 
       if (toastList.length < 3) toastList = [].concat(_toConsumableArray(toastList), [toastProperties]);
-      return /*#__PURE__*/React__default['default'].createElement(ToastContainer, null, /*#__PURE__*/React__default['default'].createElement(Toast, {
+      return /*#__PURE__*/React.createElement(ToastContainer, null, /*#__PURE__*/React.createElement(Toast, {
         toastList: toastList,
         position: toastPosition,
         autoDelete: toastIsAutoDelete,
@@ -1640,4 +1636,4 @@ var _Toast = /*#__PURE__*/function () {
 
 var toast = new _Toast(toastList);
 
-exports.toast = toast;
+export { Toast, ToastContainer, toast };

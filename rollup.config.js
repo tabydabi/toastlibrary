@@ -13,7 +13,7 @@ export default {
   input: "src/index.jsx",
   output: {
     file: "dist/bundles/bundle.js",
-    format: "cjs",
+    format: "esm",
   },
   external: ["react", "react-dom", "styled-components"],
   plugins: [
