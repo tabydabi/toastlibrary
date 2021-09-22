@@ -5,6 +5,10 @@ import generatePackageJson from "rollup-plugin-generate-package-json"
 import svg from "rollup-plugin-svg"
 import svgr from "@svgr/rollup"
 import url from "rollup-plugin-url"
+import alias from "@rollup/plugin-alias"
+import path from 'path'
+
+const root = path.resolve(__dirname);
 
 export default {
   input: "src/index.jsx",
@@ -18,6 +22,15 @@ export default {
     commonjs(),
     url(),
     svgr(),
+    alias(
+      {
+          resolve: ['*', '.js', '.jsx', '.svg'],
+          entries: [{
+              find: '@',
+              replacement: './src',
+          }]
+      }
+  ),
     svg(),
     babel({
       extensions: [".jsx", ".js", ".tsx"],
