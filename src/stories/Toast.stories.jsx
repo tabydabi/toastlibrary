@@ -55,6 +55,5 @@ ToastExample.args = {
   toastIsAutoDelete: true,
   toastAutoDeleteTime: 3000,
   animation: "",
-
   description: "toast description",
 };

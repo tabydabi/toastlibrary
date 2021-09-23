@@ -37,7 +37,7 @@ export const Toast = (props) => {
         <div className={`notification-container ${position}`}>
           {list.map((toast) => (
             <div
-              key={toast.id}
+              key={toast.id + 1}
               className={`notification toast ${position}`}
               style={{
                 backgroundColor: toast.backgroundColor,
