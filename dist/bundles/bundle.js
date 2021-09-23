@@ -1444,7 +1444,7 @@ var Toast = function Toast(props) {
     className: "notification-container ".concat(position)
   }, list.map(function (toast) {
     return /*#__PURE__*/React.createElement("div", {
-      key: toast.id + 1,
+      key: toast.id,
       className: "notification toast ".concat(position),
       style: {
         backgroundColor: toast.backgroundColor,
@@ -1543,7 +1543,6 @@ var _Toast = /*#__PURE__*/function () {
 
     _Toast.singleton = this;
     this.toastList = toastList;
-    this.showToast = this.showToast;
   }
 
   _createClass(_Toast, [{

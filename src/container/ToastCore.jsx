@@ -33,7 +33,6 @@ class _Toast {
     }
     _Toast.singleton = this;
     this.toastList = toastList;
-    this.showToast = this.showToast;
   }
 
   getId() {

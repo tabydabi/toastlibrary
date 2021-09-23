@@ -1,4 +1,4 @@
-import { toast } from "../container/ToastCore"
+import { toast } from "../container/ToastCore";
 
 export default {
   title: "Toast",
@@ -20,25 +20,16 @@ export default {
         type: "boolean",
       },
     },
-    toastAutoDeleteTime: {
-      control: {
-        type: "number",
-      },
-    },
+
     animation: {
       control: {
         type: "inline-radio",
-        options: ["toast-from-top", "toast-from-bottom", "toast-in-right ", "toast-in-left"],
-      },
-    },
-    title: {
-      control: {
-        type: "text",
-      },
-    },
-    titleColor: {
-      control: {
-        type: "color",
+        options: [
+          "toast-from-top",
+          "toast-from-bottom",
+          "toast-in-right ",
+          "toast-in-left",
+        ],
       },
     },
     description: {
@@ -46,32 +37,17 @@ export default {
         type: "text",
       },
     },
-    backgroundColor: {
-      control: {
-        type: "color",
-      },
-    },
-
-
   },
-}
+};
 
-export const ToastExample = args =>
-  toast.showToast(
-    args.toastType,
-    {
-      title: args.title,
-      titleColor: args.titleColor,
-      description: args.description,
-      backgroundColor: args.backgroundColor,
-      icon: args.icon,
-      toastPadding: args.toastPadding,
-    },
-    args.toastPosition,
-    args.toastIsAutoDelete,
-    args.toastAutoDeleteTime,
-    args.animation,
-  )
+export const ToastExample = (args) =>
+  toast.showToast(args.description, {
+    type: args.toastType,
+    position: args.toastPosition,
+    autoDelete: args.toastIsAutoDelete,
+    delay: args.toastAutoDeleteTime,
+    animation: args.animation,
+  });
 
 ToastExample.args = {
   toastType: "error",
@@ -79,8 +55,6 @@ ToastExample.args = {
   toastIsAutoDelete: true,
   toastAutoDeleteTime: 3000,
   animation: "",
-  title: "",
-  titleColor: "",
+
   description: "toast description",
-  backgroundColor: "",
-}
+};
