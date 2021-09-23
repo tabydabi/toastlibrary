@@ -84,7 +84,7 @@ class _Toast {
         return YELOW;
         break;
       default:
-        return GREEN;
+        return GREY;
         break;
     }
   }

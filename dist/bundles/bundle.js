@@ -1444,7 +1444,7 @@ var Toast = function Toast(props) {
     className: "notification-container ".concat(position)
   }, list.map(function (toast) {
     return /*#__PURE__*/React.createElement("div", {
-      key: toast.id,
+      key: toast.id + 1,
       className: "notification toast ".concat(position),
       style: {
         backgroundColor: toast.backgroundColor,
@@ -1519,6 +1519,7 @@ var RED = "#d9534f";
 var PURPLE = "#9A40D3";
 var BLACK = "#000000";
 var YELOW = "#F4E048";
+var GREY = "#f2f2f2";
 
 var SUCCESS = "success";
 var ERROR = "error";
@@ -1607,7 +1608,7 @@ var _Toast = /*#__PURE__*/function () {
           return YELOW;
 
         default:
-          return GREEN;
+          return GREY;
       }
     }
   }, {
